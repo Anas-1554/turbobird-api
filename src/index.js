@@ -11,6 +11,7 @@ const Screenshotter = require('./browser/screenshotter');
 const createStatusHandler = require('./api/status');
 const createScreenshotHandler = require('./api/screenshot');
 const createStopHandler = require('./api/stop');
+const { createStudentHandler } = require('./api/student');
 
 class TutorBirdScraper {
   constructor() {
@@ -54,6 +55,7 @@ class TutorBirdScraper {
         endpoints: {
           'GET /api/status': 'Get browser and login status',
           'POST /api/screenshot': 'Take a screenshot',
+          'POST /api/student/new': 'Create a new student',
           'POST /api/stop': 'Stop browser and server'
         }
       });
@@ -64,6 +66,7 @@ class TutorBirdScraper {
     // API routes - called after browser initialization
     this.app.get('/api/status', createStatusHandler(this.puppeteerLauncher, this.authManager));
     this.app.post('/api/screenshot', createScreenshotHandler(this.screenshotter));
+    this.app.post('/api/student/new', createStudentHandler(this.puppeteerLauncher));
     this.app.post('/api/stop', createStopHandler(this.puppeteerLauncher, this.server));
   }
 
